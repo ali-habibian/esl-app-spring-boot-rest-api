@@ -1,6 +1,6 @@
 package com.habibian.repository;
 
-import com.habibian.entity.User;
+import com.habibian.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

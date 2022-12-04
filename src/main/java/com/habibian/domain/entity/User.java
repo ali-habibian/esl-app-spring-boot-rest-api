@@ -1,4 +1,4 @@
-package com.habibian.entity;
+package com.habibian.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
