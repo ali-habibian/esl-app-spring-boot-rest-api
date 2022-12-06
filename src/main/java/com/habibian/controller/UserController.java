@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping("/app")
-    public String showAppWorks(){
+    public String showAppWorks() {
         return "App is working";
     }
 }
