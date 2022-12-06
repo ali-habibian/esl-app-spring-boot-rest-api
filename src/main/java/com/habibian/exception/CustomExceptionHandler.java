@@ -7,9 +7,12 @@ import com.habibian.exception.domain.EmailNotFoundException;
 import com.habibian.exception.domain.UserNotFoundException;
 import com.habibian.exception.domain.UsernameExistException;
 import jakarta.persistence.NoResultException;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -101,6 +105,13 @@ public class CustomExceptionHandler implements ErrorController {
     public ResponseEntity<HttpResponse> internalServerErrorException(Exception exception) {
         LOGGER.error(exception.getMessage());
         return createHttpResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<HttpResponse> validationException(MethodArgumentNotValidException exception) {
+        LOGGER.error(exception.getMessage());
+
+        return createHttpResponse(BAD_REQUEST, exception.getBody().getDetail());
     }
 
 //    @ExceptionHandler(NotAnImageFileException.class)
