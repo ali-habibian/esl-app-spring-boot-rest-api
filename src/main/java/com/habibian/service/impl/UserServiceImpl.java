@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.habibian.constant.FileConstant.*;
 import static com.habibian.constant.FileConstant.DEFAULT_USER_IMAGE_PATH;
@@ -108,17 +109,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<UserDTO> getUsers() {
-        return null;
+        return userRepository.findAll().stream().map((user) ->
+                modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO findUserByUsername(String username) {
-        return null;
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
-    public UserDTO findUserByEmail(String email) {
-        return null;
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     private String encodePassword(String password) {

@@ -1,5 +1,6 @@
 package com.habibian.service;
 
+import com.habibian.domain.entity.User;
 import com.habibian.dto.user.UserCreationDTO;
 import com.habibian.dto.user.UserDTO;
 
@@ -11,7 +12,7 @@ public interface UserService {
 
     List<UserDTO> getUsers();
 
-    UserDTO findUserByUsername(String username);
+    User findUserByUsername(String username);
 
-    UserDTO findUserByEmail(String email);
+    User findUserByEmail(String email);
 }
