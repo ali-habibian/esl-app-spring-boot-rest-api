@@ -10,6 +10,7 @@ import com.habibian.exception.domain.NotAnImageFileException;
 import com.habibian.exception.domain.UserNotFoundException;
 import com.habibian.exception.domain.UsernameExistException;
 import com.habibian.repository.UserRepository;
+import com.habibian.service.LoginAttemptService;
 import com.habibian.service.UserService;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -49,11 +50,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private final UserRepository userRepository;
+    private final LoginAttemptService loginAttemptService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, LoginAttemptService loginAttemptService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.loginAttemptService = loginAttemptService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.modelMapper = new ModelMapper();
     }
@@ -66,7 +69,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             LOGGER.error(NO_USER_FOUND_BY_USERNAME + username);
             throw new UsernameNotFoundException(NO_USER_FOUND_BY_USERNAME + username);
         } else {
-//            validateLoginAttempt(user); // TODO
+            validateLoginAttempt(user);
 
             user.setLastLoginDateDisplay(user.getLastLoginDate());
             user.setLastLoginDate(new Date());
@@ -186,5 +189,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private String setProfileImageUrl(String username) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username + FORWARD_SLASH
                 + username + DOT + JPG_EXTENSION).toUriString();
+    }
+
+    private void validateLoginAttempt(User user) {
+        if (user.isNotLocked()) {
+            user.setNotLocked(!loginAttemptService.hasExceededMaxAttempts(user.getUsername()));
+        } else {
+            loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
+        }
     }
 }
