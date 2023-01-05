@@ -2,9 +2,9 @@ package com.habibian.controller;
 
 import com.habibian.domain.UserPrincipal;
 import com.habibian.domain.entity.User;
-import com.habibian.dto.user.UserCreationDTO;
+import com.habibian.dto.user.UserRegisterRequest;
 import com.habibian.dto.user.UserDTO;
-import com.habibian.dto.user.UserLoginDTO;
+import com.habibian.dto.user.UserLoginRequest;
 import com.habibian.service.UserService;
 import com.habibian.utility.JwtTokenProvider;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody UserLoginDTO user) {
+    public ResponseEntity<UserDTO> loginUser(@RequestBody UserLoginRequest user) {
         authenticate(user.getUsername(), user.getPassword());
 
         User loginUser = userService.findUserByUsername(user.getUsername());
@@ -46,8 +46,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody UserCreationDTO userCreationDTO) {
-        UserDTO userDTO = userService.registerUser(userCreationDTO);
+    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
+        UserDTO userDTO = userService.registerUser(userRegisterRequest);
 
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }

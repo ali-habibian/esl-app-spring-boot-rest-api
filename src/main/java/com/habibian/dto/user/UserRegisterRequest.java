@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserCreationDTO {
+public class UserRegisterRequest {
 
     @NotBlank(message = "First name is mandatory")
     @JsonProperty("firstName")

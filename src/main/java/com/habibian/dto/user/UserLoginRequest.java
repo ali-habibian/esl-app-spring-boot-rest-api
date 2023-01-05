@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserLoginDTO {
+public class UserLoginRequest {
 
     @NotBlank(message = "Username is mandatory")
     @JsonProperty("username")

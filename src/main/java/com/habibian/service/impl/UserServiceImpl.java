@@ -2,8 +2,10 @@ package com.habibian.service.impl;
 
 import com.habibian.domain.UserPrincipal;
 import com.habibian.domain.entity.User;
-import com.habibian.dto.user.UserCreationDTO;
+import com.habibian.dto.user.UserCreationRequest;
+import com.habibian.dto.user.UserRegisterRequest;
 import com.habibian.dto.user.UserDTO;
+import com.habibian.dto.user.UserUpdateRequest;
 import com.habibian.enumeration.Role;
 import com.habibian.exception.domain.EmailExistException;
 import com.habibian.exception.domain.NotAnImageFileException;
@@ -15,6 +17,7 @@ import com.habibian.service.UserService;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,18 +88,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDTO registerUser(UserCreationDTO userCreationDTO) {
-        validateNewUsernameAndEmail(EMPTY, userCreationDTO.getUsername(), userCreationDTO.getEmail());
+    public UserDTO registerUser(UserRegisterRequest userRegisterRequest) {
+        validateNewUsernameAndEmail(EMPTY, userRegisterRequest.getUsername(), userRegisterRequest.getEmail());
 
-        String encodedPassword = encodePassword(userCreationDTO.getPassword());
+        String encodedPassword = encodePassword(userRegisterRequest.getPassword());
 
         User user = new User();
         user.setUserId(generateUserId());
-        user.setFirstName(userCreationDTO.getFirstName());
-        user.setLastName(userCreationDTO.getLastName());
-        user.setUsername(userCreationDTO.getUsername());
-        user.setEmail(userCreationDTO.getEmail());
-        user.setPhoneNumber(userCreationDTO.getPhoneNumber());
+        user.setFirstName(userRegisterRequest.getFirstName());
+        user.setLastName(userRegisterRequest.getLastName());
+        user.setUsername(userRegisterRequest.getUsername());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setPhoneNumber(userRegisterRequest.getPhoneNumber());
         user.setJoinDate(new Date());
         user.setPassword(encodedPassword);
         user.setActive(true);
@@ -103,7 +107,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setSubscribed(false);
         user.setRole(Role.ROLE_USER.name());
         user.setAuthorities(Role.ROLE_USER.getAuthorities());
-        user.setProfileImageUrl(setProfileImageUrl(userCreationDTO.getUsername()));
+        user.setProfileImageUrl(setProfileImageUrl(userRegisterRequest.getUsername()));
 
         User savedUser = userRepository.save(user);
 
@@ -124,6 +128,78 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User addNewUser(UserCreationRequest request) throws IOException {
+        validateNewUsernameAndEmail(EMPTY, request.getUsername(), request.getEmail());
+
+        User user = new User();
+        user.setUserId(generateUserId());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setJoinDate(new Date());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(encodePassword(request.getPassword()));
+        user.setActive(request.isActive());
+        user.setNotLocked(request.isNonLocked());
+        user.setRole(getRoleEnumName(request.getRole()).name());
+        user.setAuthorities(getRoleEnumName(request.getRole()).getAuthorities());
+        user.setProfileImageUrl(getTemporaryProfileImageUrl(request.getUsername()));
+        userRepository.save(user);
+        saveProfileImage(user, request.getProfileImage());
+
+        return user;
+    }
+
+    @Override
+    public User updateUser(UserUpdateRequest request) throws IOException {
+        User currentUser = validateNewUsernameAndEmail(request.getCurrentUsername(), request.getNewUsername(), request.getNewEmail());
+
+        assert currentUser != null;
+        currentUser.setFirstName(request.getNewFirstName());
+        currentUser.setLastName(request.getNewLastName());
+        currentUser.setUsername(request.getNewUsername());
+        currentUser.setEmail(request.getNewEmail());
+        currentUser.setActive(request.isActive());
+        currentUser.setNotLocked(request.isNonLocked());
+        currentUser.setRole(getRoleEnumName(request.getRole()).name());
+        currentUser.setAuthorities(getRoleEnumName(request.getRole()).getAuthorities());
+        userRepository.save(currentUser);
+        saveProfileImage(currentUser, request.getNewProfileImage());
+
+        return currentUser;
+    }
+
+    @Override
+    public void deleteUser(String username) throws IOException {
+        User user = userRepository.findByUsername(username);
+        Path userFolder = Paths.get(USER_FOLDER + user.getUsername()).toAbsolutePath().normalize();
+        FileUtils.deleteDirectory(new File(userFolder.toString()));
+        userRepository.deleteById(user.getId());
+    }
+
+    @Override
+    public void resetPassword(String email) {
+        /* TODO
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new EmailNotFoundException(NO_USER_FOUND_BY_EMAIL + email);
+        }
+        String password = generatePassword();
+        user.setPassword(encodePassword(password));
+        userRepository.save(user);
+        LOGGER.info("New user password: " + password);
+        emailService.sendNewPasswordEmail(user.getFirstName(), password, user.getEmail());
+        */
+    }
+
+    @Override
+    public User updateProfileImage(String username, MultipartFile newProfileImage) throws IOException {
+        User user = validateNewUsernameAndEmail(username, null, null);
+        saveProfileImage(user, newProfileImage);
+        return user;
     }
 
     private String encodePassword(String password) {
