@@ -20,13 +20,13 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    User addNewUser(UserCreationRequest request) throws IOException;
+    UserDTO addNewUser(UserCreationRequest request) throws IOException;
 
-    User updateUser(UserUpdateRequest request) throws IOException;
+    UserDTO updateUser(UserUpdateRequest request) throws IOException;
 
     void deleteUser(String username) throws IOException;
 
     void resetPassword(String email);
 
-    User updateProfileImage(String username, MultipartFile newProfileImage) throws IOException;
+    UserDTO updateProfileImage(String username, MultipartFile newProfileImage) throws IOException;
 }

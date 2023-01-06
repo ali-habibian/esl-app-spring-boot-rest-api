@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User addNewUser(UserCreationRequest request) throws IOException {
+    public UserDTO addNewUser(UserCreationRequest request) throws IOException {
         validateNewUsernameAndEmail(EMPTY, request.getUsername(), request.getEmail());
 
         User user = new User();
@@ -150,11 +150,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
         saveProfileImage(user, request.getProfileImage());
 
-        return user;
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
-    public User updateUser(UserUpdateRequest request) throws IOException {
+    public UserDTO updateUser(UserUpdateRequest request) throws IOException {
         User currentUser = validateNewUsernameAndEmail(request.getCurrentUsername(), request.getNewUsername(), request.getNewEmail());
 
         assert currentUser != null;
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(currentUser);
         saveProfileImage(currentUser, request.getNewProfileImage());
 
-        return currentUser;
+        return modelMapper.map(currentUser, UserDTO.class);
     }
 
     @Override
@@ -196,10 +196,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User updateProfileImage(String username, MultipartFile newProfileImage) throws IOException {
+    public UserDTO updateProfileImage(String username, MultipartFile newProfileImage) throws IOException {
         User user = validateNewUsernameAndEmail(username, null, null);
         saveProfileImage(user, newProfileImage);
-        return user;
+        return modelMapper.map(user, UserDTO.class);
     }
 
     private String encodePassword(String password) {
