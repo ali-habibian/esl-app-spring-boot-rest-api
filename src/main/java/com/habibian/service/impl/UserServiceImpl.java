@@ -142,8 +142,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(encodePassword(request.getPassword()));
-        user.setActive(request.isActive());
-        user.setNotLocked(request.isNonLocked());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setActive(Boolean.parseBoolean(request.getIsActive()));
+        user.setNotLocked(Boolean.parseBoolean(request.getIsNonLocked()));
         user.setRole(getRoleEnumName(request.getRole()).name());
         user.setAuthorities(getRoleEnumName(request.getRole()).getAuthorities());
         user.setProfileImageUrl(getTemporaryProfileImageUrl(request.getUsername()));
@@ -162,8 +163,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         currentUser.setLastName(request.getNewLastName());
         currentUser.setUsername(request.getNewUsername());
         currentUser.setEmail(request.getNewEmail());
-        currentUser.setActive(request.isActive());
-        currentUser.setNotLocked(request.isNonLocked());
+        currentUser.setActive(Boolean.parseBoolean(request.getIsActive()));
+        currentUser.setNotLocked(Boolean.parseBoolean(request.getIsNonLocked()));
         currentUser.setRole(getRoleEnumName(request.getRole()).name());
         currentUser.setAuthorities(getRoleEnumName(request.getRole()).getAuthorities());
         userRepository.save(currentUser);

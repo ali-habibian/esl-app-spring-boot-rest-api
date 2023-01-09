@@ -46,11 +46,11 @@ public class UserUpdateRequest {
 
     @NotBlank(message = "IsNonLocked is mandatory")
     @JsonProperty("isNonLocked")
-    private boolean isNonLocked;
+    private String isNonLocked;
 
     @NotBlank(message = "IsActive is mandatory")
     @JsonProperty("isActive")
-    private boolean isActive;
+    private String isActive;
 
     @JsonProperty("newProfileImage")
     private MultipartFile newProfileImage;

@@ -39,13 +39,11 @@ public class UserCreationRequest {
     @JsonProperty("phoneNumber")
     private String phoneNumber;
 
-    @NotBlank(message = "IsNonLocked is mandatory")
-    @JsonProperty("isNonLocked")
-    private boolean isNonLocked;
+    @JsonProperty
+    private String isNonLocked;
 
-    @NotBlank(message = "IsActive is mandatory")
-    @JsonProperty("isActive")
-    private boolean isActive;
+    @JsonProperty
+    private String isActive;
 
     @JsonProperty("profileImage")
     private MultipartFile profileImage;

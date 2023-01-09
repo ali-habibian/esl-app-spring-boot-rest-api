@@ -64,13 +64,13 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTO> addNewUser(@Valid @RequestBody UserCreationRequest request) throws IOException {
+    public ResponseEntity<UserDTO> addNewUser(@Valid @ModelAttribute UserCreationRequest request) throws IOException {
         UserDTO userDTO = userService.addNewUser(request);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserUpdateRequest request) throws IOException {
+    @PostMapping("/update")
+    public ResponseEntity<UserDTO> updateUser(@Valid @ModelAttribute UserUpdateRequest request) throws IOException {
         UserDTO userDTO = userService.updateUser(request);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
