@@ -26,6 +26,6 @@ public class Vocab {
     private List<ExampleSentence> exampleSentences;
 
     @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    @JoinColumn(name = "listening_lesson_id")
+    private ListeningLesson listeningLesson;
 }

@@ -24,6 +24,6 @@ public class MultipleChoiceQuiz {
     private String answer;
 
     @ManyToOne
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
+    @JoinColumn(name = "listening_lesson_id")
+    private ListeningLesson listeningLesson;
 }
