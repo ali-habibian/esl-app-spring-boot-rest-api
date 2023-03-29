@@ -1,11 +1,13 @@
 package com.habibian.domain.entity;
 
+import com.habibian.exception.domain.ResourceNotFoundException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +27,24 @@ public class Vocab {
     @OneToMany
     private List<ExampleSentence> exampleSentences;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "listening_lesson_id")
     private ListeningLesson listeningLesson;
+
+    public void addExampleSentence(ExampleSentence sentence) {
+        if (exampleSentences == null) {
+            exampleSentences = new ArrayList<>();
+        }
+        exampleSentences.add(sentence);
+
+        sentence.setVocab(this);
+    }
+
+    public void removeExampleSentence(ExampleSentence sentence) {
+        if (exampleSentences == null) {
+            throw new ResourceNotFoundException("ExampleSentence", "id", sentence.getId());
+        }
+        exampleSentences.remove(sentence);
+        sentence.setVocab(null);
+    }
 }

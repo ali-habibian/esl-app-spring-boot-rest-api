@@ -21,7 +21,7 @@ public class ListeningLessonResponseDTO {
     private String description;
     private String audioFileUrl;
     private String scriptFileUrl;
-    private List<Vocab> vocabs;
-    private List<MultipleChoiceQuiz> multipleChoiceQuizzes; // These quizzes are for listening
-    private List<GapFillQuiz> gapFillQuizzes; // These quizzes are for vocabs
+    private List<Vocab> vocabs; // TODO Change to VocabResponseDTO
+    private List<MultipleChoiceQuiz> multipleChoiceQuizzes; // TODO Change to DTO
+    private List<GapFillQuiz> gapFillQuizzes; // TODO Change to DTO
 }

@@ -33,6 +33,11 @@ class ListeningLessonServiceImplTest {
 
     @Test
     void getById() {
+        ListeningLessonResponseDTO responseDTO = lessonService.getById(1L);
+
+        System.out.println(responseDTO);
+
+        assertEquals(2, responseDTO.getVocabs().size());
     }
 
     @Test
