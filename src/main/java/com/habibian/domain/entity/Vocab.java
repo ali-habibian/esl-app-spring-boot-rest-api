@@ -24,7 +24,7 @@ public class Vocab {
     private String SentenceInLesson;
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vocab", cascade = CascadeType.REMOVE)
     private List<ExampleSentence> exampleSentences;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})

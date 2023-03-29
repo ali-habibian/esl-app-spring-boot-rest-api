@@ -18,7 +18,7 @@ public class ExampleSentence {
     private Long id;
     private String sentence;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "vocab_id")
     private Vocab vocab;
 }
