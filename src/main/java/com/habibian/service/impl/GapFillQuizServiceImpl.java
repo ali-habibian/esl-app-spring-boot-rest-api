@@ -27,7 +27,6 @@ public class GapFillQuizServiceImpl implements GapFillQuizService {
     private final GapFillQuizRepository gapFillQuizRepository;
     private final ListeningLessonService lessonService;
     private final ModelMapper modelMapper;
-
     private final EntityManager entityManager;
 
     @Override
