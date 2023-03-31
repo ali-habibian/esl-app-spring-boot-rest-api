@@ -19,7 +19,7 @@ public class GapFillQuiz {
     private String question;
     private String answer;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "listening_lesson_id")
     private ListeningLesson listeningLesson;
 }
