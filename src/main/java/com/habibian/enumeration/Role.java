@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Ali Habibian. All rights reserved.
+ *
+ */
+
 package com.habibian.enumeration;
 
 import static com.habibian.constant.Authority.*;

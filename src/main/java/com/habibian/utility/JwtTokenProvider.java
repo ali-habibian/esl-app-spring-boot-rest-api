@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Ali Habibian. All rights reserved.
+ *
+ */
+
 package com.habibian.utility;
 
 import com.auth0.jwt.JWT;

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Ali Habibian. All rights reserved.
+ *
+ */
+
 package com.habibian.service.impl;
 
 import com.habibian.domain.entity.ListeningLesson;
@@ -6,7 +11,6 @@ import com.habibian.dto.listening_lesson.ListeningLessonResponseDTO;
 import com.habibian.dto.multiple_choice_quiz.MultipleChoiceQuizRequestDTO;
 import com.habibian.dto.multiple_choice_quiz.MultipleChoiceQuizResponseDTO;
 import com.habibian.exception.domain.ResourceNotFoundException;
-import com.habibian.repository.GapFillQuizRepository;
 import com.habibian.repository.MultipleChoiceQuizRepository;
 import com.habibian.service.ListeningLessonService;
 import com.habibian.service.MultipleChoiceQuizService;

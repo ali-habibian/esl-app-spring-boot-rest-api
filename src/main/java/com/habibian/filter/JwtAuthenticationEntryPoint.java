@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Ali Habibian. All rights reserved.
+ *
+ */
+
 package com.habibian.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
