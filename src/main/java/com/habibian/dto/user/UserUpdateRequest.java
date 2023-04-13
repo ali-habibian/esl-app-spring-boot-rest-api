@@ -43,7 +43,7 @@ public class UserUpdateRequest {
 
     @NotBlank(message = "Role is mandatory")
     @JsonProperty("role")
-    private String role;
+    private String role; // TODO must be removed
 
     @NotBlank(message = "Phone number is mandatory")
     @JsonProperty("phoneNumber")

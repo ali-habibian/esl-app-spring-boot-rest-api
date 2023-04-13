@@ -7,6 +7,7 @@ package com.habibian.dto.listening_lesson;
 
 import com.habibian.enumeration.LessonLevel;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -18,6 +19,6 @@ public class ListeningLessonRequestDTO {
     private LessonLevel level;
     private String title;
     private String description;
-    private String audioFileUrl;
-    private String scriptFileUrl;
+    private MultipartFile audioFile;
+    private MultipartFile scriptFile;
 }

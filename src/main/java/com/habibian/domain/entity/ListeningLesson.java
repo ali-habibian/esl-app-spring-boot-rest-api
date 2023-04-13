@@ -27,6 +27,7 @@ public class ListeningLesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
+    private String lessonId;
     private LessonLevel level;
     private String title;
     private String description;

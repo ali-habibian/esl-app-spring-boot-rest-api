@@ -5,9 +5,11 @@
 
 package com.habibian;
 
+import com.habibian.configuration.FileUploadProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,6 +23,9 @@ import java.util.Collections;
 import static com.habibian.constant.FileConstant.USER_FOLDER;
 
 @SpringBootApplication
+@EnableConfigurationProperties({
+        FileUploadProperties.class
+})
 public class EslAppSpringBootRestApiApplication {
 
     public static void main(String[] args) {

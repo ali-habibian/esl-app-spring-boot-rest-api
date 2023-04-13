@@ -13,6 +13,7 @@ import com.habibian.exception.domain.ResourceNotFoundException;
 import com.habibian.repository.ListeningLessonRepository;
 import com.habibian.service.ListeningLessonService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,15 +26,15 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class ListeningLessonServiceImpl implements ListeningLessonService {
-
     private final ListeningLessonRepository lessonRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public ListeningLessonResponseDTO create(ListeningLessonRequestDTO request) {
-        ListeningLesson listeningLesson = modelMapper.map(request, ListeningLesson.class);
-        ListeningLesson response = lessonRepository.save(listeningLesson);
-        return modelMapper.map(response, ListeningLessonResponseDTO.class);
+    public ListeningLessonResponseDTO create(ListeningLessonRequestDTO request, String audioFileUrl, String scriptFileUrl) {
+        ListeningLesson listeningLesson = new ListeningLesson();
+
+        listeningLesson.setLessonId(generateLessonId());
+        return getListeningLessonResponseDTO(request, audioFileUrl, scriptFileUrl, listeningLesson);
     }
 
     @Override
@@ -72,18 +73,11 @@ public class ListeningLessonServiceImpl implements ListeningLessonService {
     }
 
     @Override
-    public ListeningLessonResponseDTO update(long id, ListeningLessonRequestDTO request) {
+    public ListeningLessonResponseDTO update(long id, ListeningLessonRequestDTO request, String audioFileUrl, String scriptFileUrl) {
         ListeningLesson listeningLesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ListeningLesson", "id", id));
 
-        listeningLesson.setLevel(request.getLevel());
-        listeningLesson.setTitle(request.getTitle());
-        listeningLesson.setDescription(request.getDescription());
-        listeningLesson.setAudioFileUrl(request.getAudioFileUrl());
-        listeningLesson.setScriptFileUrl(request.getScriptFileUrl());
-
-        ListeningLesson response = lessonRepository.save(listeningLesson);
-        return modelMapper.map(response, ListeningLessonResponseDTO.class);
+        return getListeningLessonResponseDTO(request, audioFileUrl, scriptFileUrl, listeningLesson);
     }
 
     @Override
@@ -91,5 +85,21 @@ public class ListeningLessonServiceImpl implements ListeningLessonService {
         ListeningLesson listeningLesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ListeningLesson", "id", id));
         lessonRepository.delete(listeningLesson);
+    }
+
+
+    private String generateLessonId() {
+        return RandomStringUtils.randomNumeric(10);
+    }
+
+    private ListeningLessonResponseDTO getListeningLessonResponseDTO(ListeningLessonRequestDTO request, String audioFileUrl, String scriptFileUrl, ListeningLesson listeningLesson) {
+        listeningLesson.setLevel(request.getLevel());
+        listeningLesson.setTitle(request.getTitle());
+        listeningLesson.setDescription(request.getDescription());
+        listeningLesson.setAudioFileUrl(audioFileUrl);
+        listeningLesson.setScriptFileUrl(scriptFileUrl);
+
+        ListeningLesson response = lessonRepository.save(listeningLesson);
+        return modelMapper.map(response, ListeningLessonResponseDTO.class);
     }
 }

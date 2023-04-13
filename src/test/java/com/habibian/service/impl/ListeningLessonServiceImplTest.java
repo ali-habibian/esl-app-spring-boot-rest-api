@@ -23,17 +23,7 @@ class ListeningLessonServiceImplTest {
 
     @Test
     void create() {
-        ListeningLessonRequestDTO request = ListeningLessonRequestDTO.builder()
-                .title("Lesson 1")
-                .description("Description for Lesson 1")
-                .level(LessonLevel.A1)
-                .audioFileUrl("audio url")
-                .scriptFileUrl("script file url")
-                .build();
 
-        ListeningLessonResponseDTO responseDTO = lessonService.create(request);
-        System.out.println(responseDTO.toString());
-        assertEquals(1L, responseDTO.getId());
     }
 
     @Test

@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface ListeningLessonService {
 
-    ListeningLessonResponseDTO create(ListeningLessonRequestDTO request);
+    ListeningLessonResponseDTO create(ListeningLessonRequestDTO request, String audioFileUrl, String scriptFileUrl);
 
     ListeningLessonResponseDTO getById(long id);
 
@@ -27,7 +27,7 @@ public interface ListeningLessonService {
 
     Page<ListeningLessonResponseDTO> getAllByLevelWithPagination(LessonLevel level, Pageable pageable);
 
-    ListeningLessonResponseDTO update(long id, ListeningLessonRequestDTO request);
+    ListeningLessonResponseDTO update(long id, ListeningLessonRequestDTO request, String audioFileUrl, String scriptFileUrl);
 
     void delete(long id);
 }
