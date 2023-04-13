@@ -5,9 +5,9 @@
 
 package com.habibian.dto.listening_lesson;
 
-import com.habibian.domain.entity.GapFillQuiz;
-import com.habibian.domain.entity.MultipleChoiceQuiz;
-import com.habibian.domain.entity.Vocab;
+import com.habibian.dto.gap_fill_quiz.GapFillQuizResponseDTO;
+import com.habibian.dto.multiple_choice_quiz.MultipleChoiceQuizResponseDTO;
+import com.habibian.dto.vocab.VocabResponseDTO;
 import com.habibian.enumeration.LessonLevel;
 import lombok.*;
 
@@ -26,7 +26,7 @@ public class ListeningLessonResponseDTO {
     private String description;
     private String audioFileUrl;
     private String scriptFileUrl;
-    private List<Vocab> vocabs; // TODO Change to VocabResponseDTO
-    private List<MultipleChoiceQuiz> multipleChoiceQuizzes; // TODO Change to DTO
-    private List<GapFillQuiz> gapFillQuizzes; // TODO Change to DTO
+    private List<VocabResponseDTO> vocabs;
+    private List<MultipleChoiceQuizResponseDTO> multipleChoiceQuizzes;
+    private List<GapFillQuizResponseDTO> gapFillQuizzes;
 }

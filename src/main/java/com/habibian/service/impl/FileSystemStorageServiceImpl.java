@@ -34,7 +34,6 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
     @Override
     @PostConstruct
     public void init() {
-        // TODO Auto-generated method stub
         try {
             Files.createDirectories(this.dirLocation);
         } catch (Exception ex) {
@@ -44,7 +43,6 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
 
     @Override
     public String saveFile(MultipartFile file) {
-        // TODO Auto-generated method stub
         try {
             String fileName = file.getOriginalFilename();
             assert fileName != null;
@@ -59,7 +57,6 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
 
     @Override
     public Resource loadFile(String fileName) {
-        // TODO Auto-generated method stub
         try {
             Path file = this.dirLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(file.toUri());

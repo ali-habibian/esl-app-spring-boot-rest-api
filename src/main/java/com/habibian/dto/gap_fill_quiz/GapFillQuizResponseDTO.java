@@ -5,7 +5,6 @@
 
 package com.habibian.dto.gap_fill_quiz;
 
-import com.habibian.domain.entity.ListeningLesson;
 import lombok.*;
 
 @Getter
@@ -18,5 +17,5 @@ public class GapFillQuizResponseDTO {
     private long id;
     private String question;
     private String answer;
-    private ListeningLesson listeningLesson;
+    private Long listeningLessonId;
 }

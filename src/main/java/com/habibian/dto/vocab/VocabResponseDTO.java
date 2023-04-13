@@ -5,8 +5,7 @@
 
 package com.habibian.dto.vocab;
 
-import com.habibian.domain.entity.ExampleSentence;
-import com.habibian.domain.entity.ListeningLesson;
+import com.habibian.dto.example_sentence.ExampleSentenceResponseDTO;
 import lombok.*;
 
 import java.util.List;
@@ -22,6 +21,6 @@ public class VocabResponseDTO {
     private String title;
     private String sentenceInLesson;
     private String description;
-    private List<ExampleSentence> exampleSentences; // TODO Change to DTO
-    private ListeningLesson listeningLesson; // TODO Change to DTO
+    private List<ExampleSentenceResponseDTO> exampleSentences;
+    private Long listeningLessonId;
 }

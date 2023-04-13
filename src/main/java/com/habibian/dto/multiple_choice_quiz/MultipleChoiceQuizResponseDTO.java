@@ -5,7 +5,6 @@
 
 package com.habibian.dto.multiple_choice_quiz;
 
-import com.habibian.domain.entity.ListeningLesson;
 import lombok.*;
 
 @Getter
@@ -22,5 +21,5 @@ public class MultipleChoiceQuizResponseDTO {
     private String optionThree;
     private String optionFour;
     private String answer;
-    private ListeningLesson listeningLesson;
+    private Long listeningLessonId;
 }

@@ -5,7 +5,6 @@
 
 package com.habibian.dto.example_sentence;
 
-import com.habibian.domain.entity.Vocab;
 import lombok.*;
 
 @Getter
@@ -17,5 +16,5 @@ import lombok.*;
 public class ExampleSentenceResponseDTO {
     private Long id;
     private String sentence;
-    private Vocab vocab;
+    private Long vocabId;
 }
