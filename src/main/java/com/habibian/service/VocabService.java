@@ -23,7 +23,7 @@ public interface VocabService {
 
     List<VocabResponseDTO> getAllByLessonId(long lessonId);
 
-    // TODO - add method getAllByLessonId with pagination
+    Page<VocabResponseDTO> getAllByLessonIdWithPagination(long lessonId, Pageable pageable);
 
     VocabResponseDTO update(long id, VocabRequestDTO requestDTO);
 

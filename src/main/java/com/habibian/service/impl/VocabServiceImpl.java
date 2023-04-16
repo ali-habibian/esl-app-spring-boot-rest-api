@@ -76,6 +76,12 @@ public class VocabServiceImpl implements VocabService {
     }
 
     @Override
+    public Page<VocabResponseDTO> getAllByLessonIdWithPagination(long lessonId, Pageable pageable) {
+        Page<Vocab> vocabPage = vocabRepository.findAllByListeningLesson_Id(lessonId, pageable);
+        return vocabPage.map(vocab -> modelMapper.map(vocab, VocabResponseDTO.class));
+    }
+
+    @Override
     public VocabResponseDTO update(long id, VocabRequestDTO requestDTO) {
         Vocab vocab = vocabRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Vocab", "ID", id));

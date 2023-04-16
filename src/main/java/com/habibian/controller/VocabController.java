@@ -54,7 +54,12 @@ public class VocabController {
         return ResponseEntity.ok(responseDTOs);
     }
 
-    // TODO - add method getAllByLessonId with pagination
+    @GetMapping(params = {"lessonId", "page", "size"})
+    public ResponseEntity<Page<VocabResponseDTO>> getAllByLessonIdWithPagination(@RequestParam long lessonId, @PageableDefault Pageable pageable) {
+        Page<VocabResponseDTO> responseDTOs = vocabService.getAllByLessonIdWithPagination(lessonId, pageable);
+        return ResponseEntity.ok(responseDTOs);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<VocabResponseDTO> update(@PathVariable long id, @RequestBody VocabRequestDTO requestDTO) {
         VocabResponseDTO responseDTO = vocabService.update(id, requestDTO);
