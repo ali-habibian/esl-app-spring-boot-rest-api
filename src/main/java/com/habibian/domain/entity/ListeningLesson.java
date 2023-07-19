@@ -43,6 +43,11 @@ public class ListeningLesson {
     @OneToMany(mappedBy = "listeningLesson", cascade = CascadeType.REMOVE)
     private List<GapFillQuiz> gapFillQuizzes; // These quizzes are for vocabs
 
+    /**
+     * Adds a Vocab to the lesson's list of vocabs.
+     *
+     * @param vocab The Vocab to add.
+     */
     public void addVocab(Vocab vocab) {
         if (vocabs == null) {
             vocabs = new ArrayList<>();
@@ -52,6 +57,12 @@ public class ListeningLesson {
         vocab.setListeningLesson(this);
     }
 
+    /**
+     * Removes a Vocab from the lesson's list of vocabs.
+     *
+     * @param vocab The Vocab to remove.
+     * @throws ResourceNotFoundException if the Vocab is not found in the lesson's vocabs list.
+     */
     public void removeVocab(Vocab vocab) {
         if (vocabs == null) {
             throw new ResourceNotFoundException("vocab", "id", vocab.getId());
@@ -60,6 +71,11 @@ public class ListeningLesson {
         vocab.setListeningLesson(null);
     }
 
+    /**
+     * Adds a MultipleChoiceQuiz to the lesson's list of multiple choice quizzes.
+     *
+     * @param multipleChoiceQuiz The MultipleChoiceQuiz to add.
+     */
     public void addMultipleChoiceQuiz(MultipleChoiceQuiz multipleChoiceQuiz) {
         if (multipleChoiceQuizzes == null) {
             multipleChoiceQuizzes = new ArrayList<>();
@@ -69,6 +85,12 @@ public class ListeningLesson {
         multipleChoiceQuiz.setListeningLesson(this);
     }
 
+    /**
+     * Removes a MultipleChoiceQuiz from the lesson's list of multiple choice quizzes.
+     *
+     * @param multipleChoiceQuiz The MultipleChoiceQuiz to remove.
+     * @throws ResourceNotFoundException if the MultipleChoiceQuiz is not found in the lesson's quizzes list.
+     */
     public void removeMultipleChoiceQuiz(MultipleChoiceQuiz multipleChoiceQuiz) {
         if (multipleChoiceQuizzes == null) {
             throw new ResourceNotFoundException("multipleChoiceQuiz", "id", multipleChoiceQuiz.getId());
@@ -77,6 +99,11 @@ public class ListeningLesson {
         multipleChoiceQuiz.setListeningLesson(null);
     }
 
+    /**
+     * Adds a GapFillQuiz to the lesson's list of gap fill quizzes.
+     *
+     * @param gapFillQuiz The GapFillQuiz to add.
+     */
     public void addGapFillQuiz(GapFillQuiz gapFillQuiz) {
         if (gapFillQuizzes == null) {
             gapFillQuizzes = new ArrayList<>();
@@ -86,6 +113,12 @@ public class ListeningLesson {
         gapFillQuiz.setListeningLesson(this);
     }
 
+    /**
+     * Removes a GapFillQuiz from the lesson's list of gap fill quizzes.
+     *
+     * @param gapFillQuiz The GapFillQuiz to remove.
+     * @throws ResourceNotFoundException if the GapFillQuiz is not found in the lesson's quizzes list.
+     */
     public void removeGapFillQuiz(GapFillQuiz gapFillQuiz) {
         if (gapFillQuizzes == null) {
             throw new ResourceNotFoundException("gapFillQuiz", "id", gapFillQuiz.getId());

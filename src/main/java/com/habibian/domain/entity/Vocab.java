@@ -36,6 +36,11 @@ public class Vocab {
     @JoinColumn(name = "listening_lesson_id")
     private ListeningLesson listeningLesson;
 
+    /**
+     * Adds an ExampleSentence to the vocabulary's list of example sentences.
+     *
+     * @param sentence The ExampleSentence to add.
+     */
     public void addExampleSentence(ExampleSentence sentence) {
         if (exampleSentences == null) {
             exampleSentences = new ArrayList<>();
@@ -45,6 +50,12 @@ public class Vocab {
         sentence.setVocab(this);
     }
 
+    /**
+     * Removes an ExampleSentence from the vocabulary's list of example sentences.
+     *
+     * @param sentence The ExampleSentence to remove.
+     * @throws ResourceNotFoundException if the ExampleSentence is not found in the vocabulary's example sentences list.
+     */
     public void removeExampleSentence(ExampleSentence sentence) {
         if (exampleSentences == null) {
             throw new ResourceNotFoundException("ExampleSentence", "id", sentence.getId());

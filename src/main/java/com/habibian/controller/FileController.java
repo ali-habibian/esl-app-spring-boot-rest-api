@@ -26,41 +26,55 @@ import java.util.stream.Collectors;
 public class FileController {
     private final FileSystemStorageService fileSystemStorageService;
 
+    /**
+     * Handles the POST request to upload a single file.
+     *
+     * @param file The MultipartFile representing the uploaded file.
+     * @return ResponseEntity with the FileResponse and HttpStatus.OK.
+     */
     @PostMapping("/uploadfile")
-    public ResponseEntity<FileResponse> uploadSingleFile (@RequestParam("file") MultipartFile file) {
-        String upfile = fileSystemStorageService.saveFile(file);
+    public ResponseEntity<FileResponse> uploadSingleFile(@RequestParam("file") MultipartFile file) {
+        String uploadedFile = fileSystemStorageService.saveFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/download/")
-                .path(upfile)
+                .path(uploadedFile)
                 .toUriString();
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new FileResponse(upfile,fileDownloadUri,"File uploaded with success!")
+                new FileResponse(uploadedFile, fileDownloadUri, "File uploaded with success!")
         );
     }
 
+    /**
+     * Handles the POST request to upload multiple files.
+     *
+     * @param files The array of MultipartFiles representing the uploaded files.
+     * @return ResponseEntity with a list of FileResponses and HttpStatus.OK.
+     */
     @PostMapping("/uploadfiles")
-    public ResponseEntity<List<FileResponse>> uploadMultipleFiles (@RequestParam("files") MultipartFile[] files) {
-
+    public ResponseEntity<List<FileResponse>> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         List<FileResponse> responses = Arrays.stream(files)
-                .map(
-                        file -> {
-                            String upfile = fileSystemStorageService.saveFile(file);
-                            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                                    .path("/api/v1/download/")
-                                    .path(upfile)
-                                    .toUriString();
-                            return new FileResponse(upfile,fileDownloadUri,"File uploaded with success!");
-                        }
-                )
+                .map(file -> {
+                    String uploadedFile = fileSystemStorageService.saveFile(file);
+                    String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                            .path("/api/v1/download/")
+                            .path(uploadedFile)
+                            .toUriString();
+                    return new FileResponse(uploadedFile, fileDownloadUri, "File uploaded with success!");
+                })
                 .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
+    /**
+     * Handles the GET request to download a file by its filename.
+     *
+     * @param filename The filename of the file to be downloaded.
+     * @return ResponseEntity with the file as a Resource and appropriate headers.
+     */
     @GetMapping("/download/{filename:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
-
         Resource resource = fileSystemStorageService.loadFile(filename);
 
         return ResponseEntity.ok()
@@ -68,3 +82,4 @@ public class FileController {
                 .body(resource);
     }
 }
+

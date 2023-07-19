@@ -34,6 +34,15 @@ public class SecurityConfiguration {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Constructor for SecurityConfiguration.
+     *
+     * @param jwtAuthorizationFilter      The JWT authorization filter.
+     * @param jwtAccessDeniedHandler      The JWT access denied handler.
+     * @param jwtAuthenticationEntryPoint The JWT authentication entry point.
+     * @param userDetailsService          The user details service.
+     * @param bCryptPasswordEncoder       The BCrypt password encoder.
+     */
     public SecurityConfiguration(
             JwtAuthorizationFilter jwtAuthorizationFilter,
             JwtAccessDeniedHandler jwtAccessDeniedHandler,
@@ -47,6 +56,13 @@ public class SecurityConfiguration {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    /**
+     * Provides the authentication manager bean.
+     *
+     * @param httpSecurity The HttpSecurity object.
+     * @return The AuthenticationManager bean.
+     * @throws Exception If an exception occurs during configuration.
+     */
     @Bean
     public AuthenticationManager authenticationManagerBean(HttpSecurity httpSecurity) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
@@ -56,6 +72,13 @@ public class SecurityConfiguration {
         return authenticationManagerBuilder.build();
     }
 
+    /**
+     * Configures the security filters and rules.
+     *
+     * @param http The HttpSecurity object.
+     * @return The SecurityFilterChain object.
+     * @throws Exception If an exception occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http

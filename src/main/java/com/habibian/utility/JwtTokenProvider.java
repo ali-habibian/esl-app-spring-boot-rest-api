@@ -28,11 +28,20 @@ import java.util.stream.Collectors;
 import static com.habibian.constant.SecurityConstant.*;
 import static java.util.Arrays.stream;
 
+/**
+ * The JwtTokenProvider class provides methods for generating and validating JWT tokens for user authentication.
+ */
 @Component
 public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
 
+    /**
+     * Generates a JWT token based on the provided user principal.
+     *
+     * @param userPrincipal The UserPrincipal object representing the user.
+     * @return A JWT token as a String.
+     */
     public String generateJwtToken(UserPrincipal userPrincipal) {
         String[] claims = getClaimsFromUser(userPrincipal);
 
@@ -46,11 +55,25 @@ public class JwtTokenProvider {
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
+    /**
+     * Retrieves the granted authorities from a JWT token.
+     *
+     * @param token The JWT token as a String.
+     * @return A list of GrantedAuthority objects representing the user's authorities.
+     */
     public List<GrantedAuthority> getAuthorities(String token) {
         String[] claims = getClaimsFromToken(token);
         return stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves an Authentication object from the username, authorities, and HTTP servlet request.
+     *
+     * @param username   The username of the user.
+     * @param authorities A list of GrantedAuthority objects representing the user's authorities.
+     * @param request    The HttpServletRequest object representing the incoming request.
+     * @return An Authentication object representing the user's authentication.
+     */
     public Authentication getAuthentication(String username, List<GrantedAuthority> authorities, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(username, null, authorities);
@@ -62,11 +85,24 @@ public class JwtTokenProvider {
         return usernamePasswordAuthenticationToken;
     }
 
+    /**
+     * Checks if a JWT token is valid for a given username.
+     *
+     * @param username The username of the user.
+     * @param token    The JWT token as a String.
+     * @return true if the token is valid, false otherwise.
+     */
     public boolean isTokenValid(String username, String token) {
         JWTVerifier verifier = getJWTVerifier();
         return StringUtils.isNotEmpty(username) && !isTokenExpired(verifier, token);
     }
 
+    /**
+     * Retrieves the subject (username) from a JWT token.
+     *
+     * @param token The JWT token as a String.
+     * @return The subject (username) of the token.
+     */
     public String getSubject(String token) {
         JWTVerifier verifier = getJWTVerifier();
         return verifier.verify(token).getSubject();

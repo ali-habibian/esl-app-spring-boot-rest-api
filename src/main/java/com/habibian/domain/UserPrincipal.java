@@ -25,6 +25,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Convert the user's authorities to a collection of GrantedAuthority objects
         return stream(this.user.getAuthorities())
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
